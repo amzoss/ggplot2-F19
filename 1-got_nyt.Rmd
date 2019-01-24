@@ -5,10 +5,6 @@ date: "9/7/2018"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE)
-```
-
 ## Setup your environment
 
 ```{r}
