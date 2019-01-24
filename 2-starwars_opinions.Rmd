@@ -29,7 +29,7 @@ starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% set
 
 ```
 
-## Plot the opinions for Hans Solo
+## Plot the opinions for Han Solo
 
 ```{r}
 
