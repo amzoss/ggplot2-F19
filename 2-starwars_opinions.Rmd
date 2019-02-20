@@ -1,7 +1,7 @@
 ---
 title: "Star Wars Opinion Data"
 author: "Angela Zoss"
-date: "9/7/2018"
+date: "2/18/19"
 output: html_document
 ---
 
@@ -22,10 +22,11 @@ library(tidyverse)
 # data from https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/
 # note: CSV has two rows of headers, so I have manually created a list of headers and am adding
 # that after loading just the data rows
+# also extracting just the opinion columns and reshaping them to long data format
 
 new_names <- read_csv('data/StarWarsNames.csv') %>% select(NewNames)
   
-starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% setNames(unlist(new_names))
+starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% setNames(unlist(new_names)) %>% dplyr::select(RespondentID, starts_with("Opinion")) %>% gather("Character","Opinion",-RespondentID) %>% mutate(Character=sub("Opinion","",Character)) %>% na.omit()
 
 ```
 
@@ -35,7 +36,6 @@ starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% set
 
 # hint: there is a geom that will take a categorical variable and count the data points in
 # each category
-# also: feel free to remove NAs
 
 
 ```
@@ -54,13 +54,11 @@ starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% set
 # remember, editing an axis usually requires a scale
 
 
-
 ```
 
 ## Advanced: can you think of another way to standardize the axes?
 
 ```{r}
-
 
 
 ```
@@ -72,6 +70,9 @@ starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% set
 opinion.levels <- c("Unfamiliar (N/A)","Very unfavorably","Somewhat unfavorably",
                     "Neither favorably nor unfavorably (neutral)",
                     "Somewhat favorably","Very favorably")
+
+starwars_opins <- starwars_opins %>% 
+         mutate(Opinion=factor(Opinion, opinion.levels))
 
 
 ```
@@ -97,36 +98,13 @@ opinion.levels <- c("Unfamiliar (N/A)","Very unfavorably","Somewhat unfavorably"
 # hint: editing colors requires a change of scale
 # can google "R colors" for a list of all named colors
 
+opinion.colors <- c("grey50","firebrick4","firebrick1","grey85","dodgerblue1","dodgerblue4")
 
-
-```
-
-## What percentage of survey participants responded "No" to "SeenAnyYN"?
-
-```{r}
-
-# start with a bar chart
 
 
 ```
 
-
-```{r}
-
-# change it to a stacked bar chart, where the answers are different colors
-# hint: there will only be one bar, so x will no longer be tied to a variable
-
-
-```
-
-```{r}
-
-# change the coordinate system to polar with theta="y"
-
-
-```
-
-## Advanced 1: Compare this pattern across genders
+## Show Han Solo answers as stacked bars instead
 
 ```{r}
 
@@ -134,12 +112,61 @@ opinion.levels <- c("Unfamiliar (N/A)","Very unfavorably","Somewhat unfavorably"
 
 ```
 
-## Advanced 2: Calculate percentage and add as a label, simplify theme
+## Use custom color scale
+
+```{r}
+
+
+```
+
+## Add Jar Jar Binks as a new bar
+
+```{r}
+
+
+```
+
+## Turn the bars sideways
+
+```{r}
+
+
+```
+
+## Use fct_rev() to reverse the factor levels for the fill variable
+
+```{r}
+
+
+```
+
+## Reverse opinion.colors with rev() to reverse the color vector
 
 ```{r}
 
 
 
 ```
+
+## Add all characters into plot
+
+```{r}
+
+
+
+```
+
+## Sort characters (ascending) by their average opinion
+
+```{r}
+
+# hint: use "fct_reorder" to order Character by Opinion
+# you will have to find a way to treat Opinion as a number
+
+
+
+
+```
+
 
 

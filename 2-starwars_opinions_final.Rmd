@@ -1,7 +1,7 @@
 ---
 title: "Star Wars Opinion Data"
 author: "Angela Zoss"
-date: "9/7/2018"
+date: "2/18/19"
 output: html_document
 ---
 
@@ -22,10 +22,11 @@ library(tidyverse)
 # data from https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/
 # note: CSV has two rows of headers, so I have manually created a list of headers and am adding
 # that after loading just the data rows
+# also extracting just the opinion columns and reshaping them to long data format
 
 new_names <- read_csv('data/StarWarsNames.csv') %>% select(NewNames)
   
-starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% setNames(unlist(new_names))
+starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% setNames(unlist(new_names)) %>% dplyr::select(RespondentID, starts_with("Opinion")) %>% gather("Character","Opinion",-RespondentID) %>% mutate(Character=sub("Opinion","",Character)) %>% na.omit()
 
 ```
 
@@ -35,10 +36,9 @@ starwars_opins <- read_csv('data/StarWars.csv', skip=2, col_names=FALSE) %>% set
 
 # hint: there is a geom that will take a categorical variable and count the data points in
 # each category
-# also: feel free to remove NAs
 
-ggplot(starwars_opins %>% filter(!is.na(OpinionSolo))) +
-  geom_bar(aes(OpinionSolo))
+ggplot(starwars_opins %>% filter(Character=="Solo")) +
+  geom_bar(aes(Opinion))
 
 ```
 
@@ -46,8 +46,8 @@ ggplot(starwars_opins %>% filter(!is.na(OpinionSolo))) +
 
 ```{r}
 
-ggplot(starwars_opins %>% filter(!is.na(OpinionJarJar))) +
-  geom_bar(aes(OpinionJarJar))
+ggplot(starwars_opins %>% filter(Character == "JarJar")) +
+  geom_bar(aes(Opinion))
 
 ```
 
@@ -57,12 +57,12 @@ ggplot(starwars_opins %>% filter(!is.na(OpinionJarJar))) +
 
 # remember, editing an axis usually requires a scale
 
-ggplot(starwars_opins %>% filter(!is.na(OpinionSolo))) +
-  geom_bar(aes(OpinionSolo)) +
+ggplot(starwars_opins %>% filter(Character=="Solo")) +
+  geom_bar(aes(Opinion)) +
   scale_y_continuous(limits=c(0,610))
 
-ggplot(starwars_opins %>% filter(!is.na(OpinionJarJar))) +
-  geom_bar(aes(OpinionJarJar)) +
+ggplot(starwars_opins %>% filter(Character == "JarJar")) +
+  geom_bar(aes(Opinion)) +
   scale_y_continuous(limits=c(0,610))
 
 ```
@@ -71,9 +71,9 @@ ggplot(starwars_opins %>% filter(!is.na(OpinionJarJar))) +
 
 ```{r}
 
-ggplot(starwars_opins %>% select(OpinionSolo,OpinionJarJar) %>% gather(character,opinion) %>% na.omit()) +
-  geom_bar(aes(opinion)) +
-  facet_grid(.~character)
+ggplot(starwars_opins %>% filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Opinion)) +
+  facet_wrap(~Character)
 
 ```
 
@@ -85,13 +85,13 @@ opinion.levels <- c("Unfamiliar (N/A)","Very unfavorably","Somewhat unfavorably"
                     "Neither favorably nor unfavorably (neutral)",
                     "Somewhat favorably","Very favorably")
 
+starwars_opins <- starwars_opins %>% 
+         mutate(Opinion=factor(Opinion, opinion.levels))
+
 ggplot(starwars_opins %>% 
-         select(OpinionSolo,OpinionJarJar) %>% 
-         gather(character,opinion) %>% 
-         na.omit() %>% 
-         mutate(opinion=factor(opinion, opinion.levels))) +
-  geom_bar(aes(opinion)) +
-  facet_grid(.~character)
+         filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Opinion)) +
+  facet_wrap(~Character)
 
 ```
 
@@ -100,12 +100,9 @@ ggplot(starwars_opins %>%
 ```{r}
 
 ggplot(starwars_opins %>% 
-         select(OpinionSolo,OpinionJarJar) %>% 
-         gather(character,opinion) %>% 
-         na.omit() %>% 
-         mutate(opinion=factor(opinion, opinion.levels))) +
-  geom_bar(aes(opinion)) +
-  facet_grid(.~character) +
+         filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Opinion)) +
+  facet_wrap(~Character) +
   coord_flip()
 
 ```
@@ -115,12 +112,9 @@ ggplot(starwars_opins %>%
 ```{r}
 
 ggplot(starwars_opins %>% 
-         select(OpinionSolo,OpinionJarJar) %>% 
-         gather(character,opinion) %>% 
-         na.omit() %>% 
-         mutate(opinion=factor(opinion, opinion.levels))) +
-  geom_bar(aes(opinion,fill=opinion),show.legend = FALSE) +
-  facet_grid(.~character) +
+         filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Opinion, fill=Opinion), show.legend = FALSE) +
+  facet_wrap(~Character) +
   coord_flip()
 
 ```
@@ -132,81 +126,112 @@ ggplot(starwars_opins %>%
 # hint: editing colors requires a change of scale
 # can google "R colors" for a list of all named colors
 
+opinion.colors <- c("grey50","firebrick4","firebrick1","grey85","dodgerblue1","dodgerblue4")
+
 ggplot(starwars_opins %>% 
-         select(OpinionSolo,OpinionJarJar) %>% 
-         gather(character,opinion) %>% 
-         na.omit() %>% 
-         mutate(opinion=factor(opinion, opinion.levels))) +
-  geom_bar(aes(opinion,fill=opinion),show.legend = FALSE) +
-  facet_grid(.~character) +
+         filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Opinion, fill=Opinion), show.legend = FALSE) +
+  facet_wrap(~Character) +
   coord_flip() +
-  scale_fill_manual(values = c("grey50","firebrick4","firebrick1","grey85","dodgerblue1","dodgerblue4")) +
+  scale_fill_manual(values = opinion.colors) +
   theme_minimal()
 
 ```
 
-## What percentage of survey participants responded "No" to "SeenAnyYN"?
+## Show Han Solo answers as stacked bars instead
 
 ```{r}
 
-# start with a bar chart
-
-ggplot(starwars_opins) +
-  geom_bar(aes(SeenAnyYN))
+ggplot(starwars_opins %>% filter(Character == "Solo")) +
+  geom_bar(aes(Character,fill=Opinion))
+  
 
 ```
 
+## Use custom color scale
 
 ```{r}
 
-# change it to a stacked bar chart, where the answers are different colors
-# hint: there will only be one bar, so x will no longer be tied to a variable
-
-ggplot(starwars_opins) +
-  geom_bar(aes(1,fill=SeenAnyYN))
+ggplot(starwars_opins %>% filter(Character == "Solo")) +
+  geom_bar(aes(Character,fill=Opinion)) +
+  scale_fill_manual(values = opinion.colors)
 
 ```
+
+## Add Jar Jar Binks as a new bar
 
 ```{r}
 
-# change the coordinate system to polar with theta="y"
-
-ggplot(starwars_opins) +
-  geom_bar(aes(1,fill=SeenAnyYN)) +
-  coord_polar(theta="y")
+ggplot(starwars_opins %>% filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Character,fill=Opinion)) +
+  scale_fill_manual(values = opinion.colors)
 
 ```
 
-## Advanced 1: Compare this pattern across genders
+## Turn the bars sideways
+
+```{r}
+
+ggplot(starwars_opins %>% filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Character,fill=Opinion)) +
+  scale_fill_manual(values = opinion.colors) + 
+  coord_flip()
+
+```
+
+## Use fct_rev() to reverse the factor levels for the fill variable
+
+```{r}
+
+ggplot(starwars_opins %>% filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Character,fill=fct_rev(Opinion))) +
+  scale_fill_manual(values = opinion.colors) + 
+  coord_flip()
+
+```
+
+## Reverse opinion.colors with rev() to reverse the color vector
+
+```{r}
+
+ggplot(starwars_opins %>% filter(Character == "Solo" | Character == "JarJar")) +
+  geom_bar(aes(Character,fill=fct_rev(Opinion))) +
+  scale_fill_manual(values = rev(opinion.colors)) + 
+  coord_flip()
+
+
+```
+
+## Add all characters into plot
 
 ```{r}
 
 ggplot(starwars_opins) +
-  geom_bar(aes(1,fill=SeenAnyYN)) +
-  coord_polar(theta="y") +
-  facet_grid(.~Gender)
-
-ggplot(starwars_opins) +
-  geom_bar(aes(1,fill=SeenAnyYN), position="fill") +
-  coord_polar(theta="y") +
-  facet_grid(.~Gender)
+  geom_bar(aes(Character,fill=fct_rev(Opinion))) +
+  scale_fill_manual(values = rev(opinion.colors)) + 
+  coord_flip()
 
 
 ```
 
-## Advanced 2: Calculate percentage and add as a label, simplify theme
+## Sort characters (ascending) by their average opinion
 
 ```{r}
 
+# hint: use "fct_reorder" to order Character by Opinion
+# you will have to find a way to treat Opinion as a number
+
 ggplot(starwars_opins) +
-  geom_bar(aes(1,fill=SeenAnyYN),show.legend = FALSE) +
-  coord_polar(theta="y") +
-  geom_text(data=starwars_opins %>% count(SeenAnyYN) %>% mutate(total=sum(n),label=paste0(SeenAnyYN,"\n",round(n/total*100,1),"%")),aes(c(1,1),c(1050,450),label=label)) +
-  theme_void() +
-  labs(title="Have you seen any of the 6 films in the Star Wars franchise?")
+  geom_bar(aes(fct_reorder(as_factor(Character),
+                           as.numeric(Opinion), 
+                           fun = mean),
+               fill=fct_rev(Opinion))) +
+  scale_fill_manual(values = rev(opinion.colors), name = "Opinion") + 
+  labs(x = "Character", y = "Count") +
+  coord_flip()
+
 
 ```
-
 
 
 

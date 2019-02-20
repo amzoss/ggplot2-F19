@@ -1,7 +1,7 @@
 ---
 title: "Game of Thromes Character Ratings"
 author: "Angela Zoss"
-date: "9/7/2018"
+date: "2/19/2019"
 output: html_document
 ---
 
@@ -30,11 +30,10 @@ got <- read_csv("data/got_ratings.csv")
 
 ```{r}
 
-# a plot should include:
-# - a call to ggplot()
-# - a dataset
-# - a call to aes(), including the main x and y variables
-# - a geom layer that specifies the type of chart or shape
+# Remember the basic steps:
+# - set the data (main function)
+# - choose a shape layer
+# - map variables to aesthetics using aes() -> start with x and y in main function
 
 ggplot(got, aes(x=moral,y=physical)) + 
   geom_point()
@@ -45,8 +44,8 @@ ggplot(got, aes(x=moral,y=physical)) +
 
 ```{r}
 
-# hint: check ?geom_point to see the different aesthetics options available, but think carefully
-# about where the new option should go in the function
+# check ?geom_point to see names of the different options available
+# where should the new option go? what layer? inside or outside of aesthetics?
 
 ggplot(got, aes(x=moral,y=physical)) + 
   geom_point(size=5)
@@ -66,18 +65,13 @@ ggplot(got, aes(x=moral,y=physical)) +
 
 ```{r}
 
+# hint: check https://ggplot2.tidyverse.org/reference/#section-layer-geoms for all geom options
+
 # wrong way: aes() in geom_point does not carry down; has to be in ggplot()
 
 #ggplot(got) +
 #  geom_point(aes(x=moral,y=physical)) + 
 #  geom_text(aes(label=label))
-
-```
-
-
-```{r}
-
-# hint: check https://ggplot2.tidyverse.org/reference/#section-layer-geoms for all geom options
 
 ggplot(got, aes(x=moral,y=physical)) + 
   geom_point(size=5, alpha=.75) + 
@@ -89,8 +83,8 @@ ggplot(got, aes(x=moral,y=physical)) +
 
 ```{r}
 
-# hint: look at ?geom_text for a property that might change the position slightly
-# once you've found something to try, be careful: are you adding a new variable, or is it a constant change?
+# hint: look at ?geom_text for an option that might change the position slightly
+# where should the new option go? what layer? inside or outside of aesthetics?
 
 ggplot(got, aes(x=moral,y=physical)) + 
   geom_point(size=5, alpha=.75) + 
@@ -119,7 +113,6 @@ ggplot(got, aes(x=moral,y=physical, color=gender)) +
   geom_point(size=5, alpha=.75) + 
   geom_text(aes(label=label), nudge_y = -.025)
 
-
 ```
 
 ## Turn off legend for text layer
@@ -134,123 +127,6 @@ ggplot(got, aes(x=moral,y=physical, color=gender)) +
 
 ```
 
-
-## Switch direction of Y axis
-
-```{r}
-
-# hint: edits to axes often use scales
-# check https://ggplot2.tidyverse.org/reference/#section-scales for pre-built scales 
-# that might help (focus on scales for the y-axis)
-
-ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  geom_point(size=5, alpha=.75) + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) + 
-  scale_y_reverse()
-
-```
-
-## Add reference lines
-
-```{r}
-
-# hint: there are special geoms for straight lines;
-# check https://ggplot2.tidyverse.org/reference/#section-layer-geoms for all geom options
-
-ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  geom_point(size=5, alpha=.75) + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) + 
-  scale_y_reverse() +
-  geom_hline(yintercept=.5) +
-  geom_vline(xintercept=.5)
-
-```
-
-```{r}
-
-# look at how ggplot2 is layering the plot; rearrange layers as needed
-
-ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  scale_y_reverse() +
-  geom_hline(yintercept=.5) +
-  geom_vline(xintercept=.5)+ 
-  geom_point(size=5, alpha=.75)  + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE)
-
-```
-
-## Change the theme
-
-```{r}
-
-# Try to find a theme closer to the NYT chart;
-# see https://ggplot2.tidyverse.org/reference/#section-themes for built-in themes
-
-ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  scale_y_reverse() +
-  geom_hline(yintercept=.5) +
-  geom_vline(xintercept=.5)+ 
-  geom_point(size=5, alpha=.75)  + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) +
-  theme_bw()
-
-```
-
-## Change axis limits
-
-```{r}
-
-# the chart might look better if the axes go all the way from 0 to 1; edit
-# the axes to force them to include 0 and 1
-# hint: remember that changes to axes usually involve a scale
-
-ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  scale_y_reverse(lim=c(1,0)) +
-  scale_x_continuous(limits=c(0,1)) +
-  geom_hline(yintercept=.5) +
-  geom_vline(xintercept=.5)+ 
-  geom_point(size=5, alpha=.75)  + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) +
-  theme_bw()
-
-
-```
-
-## Annotate the axes with descriptive text
-
-```{r}
-
-# hint: geoms are typically best for chart elements involving data;
-# look for another feature that can add text to charts
-# https://ggplot2.tidyverse.org/reference/
-
-ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  scale_y_reverse(lim=c(1,0)) +
-  scale_x_continuous(limits=c(0,1)) +
-  geom_hline(yintercept=.5) +
-  geom_vline(xintercept=.5)+ 
-  geom_point(size=5, alpha=.75)  + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) +
-  theme_bw() +
-  annotate(geom = "text", x=.5, y=1, label="Ugly") +
-  annotate(geom = "text", x=.5, y=0, label="Beautiful") +
-  annotate(geom = "text", x=0, y=.48, label="Evil") +
-  annotate(geom = "text", x=1, y=.52, label="Good") 
-
-# alternate syntax - combine all annotations into one layer
-
-ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  scale_y_reverse(lim=c(1,0)) +
-  scale_x_continuous(limits=c(0,1)) +
-  geom_hline(yintercept=.5) +
-  geom_vline(xintercept=.5)+ 
-  geom_point(size=5, alpha=.75)  + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) +
-  theme_bw() +
-  annotate(geom = "text", x=c(.5,.5,0,1), y=c(1,0,.48,.52), label=c("Ugly","Beautiful","Evil","Good"))
-
-```
-
 ## Add a main title
 
 ```{r}
@@ -258,17 +134,8 @@ ggplot(got, aes(x=moral,y=physical, color=gender)) +
 # check https://ggplot2.tidyverse.org/reference/ for likely layers
 
 ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  scale_y_reverse(lim=c(1,0)) +
-  scale_x_continuous(limits=c(0,1)) +
-  geom_hline(yintercept=.5) +
-  geom_vline(xintercept=.5)+ 
   geom_point(size=5, alpha=.75)  + 
   geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) +
-  theme_bw() +
-  annotate(geom = "text", x=c(.5,.5,0,1), y=c(1,0,.48,.52), label=c("Ugly","Beautiful","Evil","Good")) +
   labs(title="The moral and physical ratings of characters from Game of Thrones")
 
 ```
-
-
-

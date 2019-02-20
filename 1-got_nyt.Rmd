@@ -1,7 +1,7 @@
 ---
 title: "Game of Thromes Character Ratings"
 author: "Angela Zoss"
-date: "9/7/2018"
+date: "2/19/2019"
 output: html_document
 ---
 
@@ -30,11 +30,12 @@ got <- read_csv("data/got_ratings.csv")
 
 ```{r}
 
-# a plot should include:
-# - a call to ggplot()
-# - a dataset
-# - a call to aes(), including the main x and y variables
-# - a geom layer that specifies the type of chart or shape
+# Remember the basic steps:
+# - set the data (main function)
+# - choose a shape layer
+# - map variables to aesthetics using aes() -> start with x and y in main function
+
+
 
 ```
 
@@ -42,8 +43,9 @@ got <- read_csv("data/got_ratings.csv")
 
 ```{r}
 
-# hint: check ?geom_point to see the different aesthetics options available, but think carefully
-# about where the new option should go in the function
+# check ?geom_point to see names of the different options available
+# where should the new option go? what layer? inside or outside of aesthetics?
+
 
 
 ```
@@ -51,6 +53,7 @@ got <- read_csv("data/got_ratings.csv")
 ## Set the alpha (transparency) of all points to .75
 
 ```{r}
+
 
 
 ```
@@ -69,8 +72,8 @@ got <- read_csv("data/got_ratings.csv")
 
 ```{r}
 
-# hint: look at ?geom_text for a property that might change the position slightly
-# once you've found something to try, be careful: are you adding a new variable, or is it a constant change?
+# hint: look at ?geom_text for an option that might change the position slightly
+# where should the new option go? what layer? inside or outside of aesthetics?
 
 
 
@@ -99,78 +102,12 @@ got <- read_csv("data/got_ratings.csv")
 
 ```
 
-
-## Switch direction of Y axis
-
-```{r}
-
-# hint: edits to axes often use scales
-# check https://ggplot2.tidyverse.org/reference/#section-scales for pre-built scales 
-# that might help (focus on scales for the y-axis)
-
-
-
-```
-
-## Add reference lines
-
-```{r}
-
-# hint: there are special geoms for straight lines;
-# check https://ggplot2.tidyverse.org/reference/#section-layer-geoms for all geom options
-
-
-
-```
-
-```{r}
-
-# look at how ggplot2 is layering the plot; rearrange layers as needed
-
-
-
-```
-
-## Change the theme
-
-```{r}
-
-# Try to find a theme closer to the NYT chart;
-# see https://ggplot2.tidyverse.org/reference/#section-themes for built-in themes
-
-
-
-```
-
-## Change axis limits
-
-```{r}
-
-# the chart might look better if the axes go all the way from 0 to 1; edit
-# the axes to force them to include 0 and 1
-# hint: remember that changes to axes usually involve a scale
-
-
-
-```
-
-## Annotate the axes with descriptive text
-
-```{r}
-
-# hint: geoms are typically best for chart elements involving data;
-# look for another feature that can add text to charts
-# https://ggplot2.tidyverse.org/reference/
-
-
-
-```
-
 ## Add a main title
 
 ```{r}
 
 # check https://ggplot2.tidyverse.org/reference/ for likely layers
+
 
 
 ```
