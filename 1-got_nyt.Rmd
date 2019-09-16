@@ -39,20 +39,12 @@ got <- read_csv("data/got_ratings.csv")
 
 ```
 
-## Set the size of all points to 5
+## Set the alpha (transparency) of all points to .75
 
 ```{r}
 
 # check ?geom_point to see names of the different options available
 # where should the new option go? what layer? inside or outside of aesthetics?
-
-
-
-```
-
-## Set the alpha (transparency) of all points to .75
-
-```{r}
 
 
 
@@ -102,11 +94,11 @@ got <- read_csv("data/got_ratings.csv")
 
 ```
 
-## Add a main title
+## Split the chart up into separate charts for each family (loyalty group)
 
 ```{r}
 
-# check https://ggplot2.tidyverse.org/reference/ for likely layers
+# Hint: check https://ggplot2.tidyverse.org/reference/ for facet layers
 
 
 

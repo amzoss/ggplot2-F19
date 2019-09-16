@@ -3,6 +3,10 @@ ggplot2 Templates
 Angela Zoss
 2/1/2018
 
+``` r
+knitr::opts_chunk$set(error = TRUE)
+```
+
 ## Setup your environment
 
 ``` r
@@ -10,6 +14,17 @@ Angela Zoss
 
 library(tidyverse)
 ```
+
+    ## ── Attaching packages ────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+
+    ## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
+    ## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
+    ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
+    ## ✔ readr   1.1.1     ✔ forcats 0.3.0
+
+    ## ── Conflicts ───────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
 
 ## Load your data
 
@@ -20,6 +35,25 @@ library(tidyverse)
 
 adult <- read_csv("../data/adult.csv", na="?")
 ```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   age = col_integer(),
+    ##   workclass = col_character(),
+    ##   fnlwgt = col_integer(),
+    ##   education = col_character(),
+    ##   education.num = col_integer(),
+    ##   marital.status = col_character(),
+    ##   occupation = col_character(),
+    ##   relationship = col_character(),
+    ##   race = col_character(),
+    ##   sex = col_character(),
+    ##   capital.gain = col_integer(),
+    ##   capital.loss = col_integer(),
+    ##   hours.per.week = col_integer(),
+    ##   native.country = col_character(),
+    ##   income = col_character()
+    ## )
 
 ## Try a few charts
 

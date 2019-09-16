@@ -1,7 +1,7 @@
 ---
 title: "Game of Thromes Character Ratings"
 author: "Angela Zoss"
-date: "2/19/2019"
+date: "8/14/2019"
 output: html_document
 ---
 
@@ -40,24 +40,13 @@ ggplot(got, aes(x=moral,y=physical)) +
 
 ```
 
-## Set the size of all points to 5
-
-```{r}
-
-# check ?geom_point to see names of the different options available
-# where should the new option go? what layer? inside or outside of aesthetics?
-
-ggplot(got, aes(x=moral,y=physical)) + 
-  geom_point(size=5)
-
-```
 
 ## Set the alpha (transparency) of all points to .75
 
 ```{r}
 
 ggplot(got, aes(x=moral,y=physical)) + 
-  geom_point(size=5, alpha=.75)
+  geom_point(alpha=.75)
 
 ```
 
@@ -74,7 +63,7 @@ ggplot(got, aes(x=moral,y=physical)) +
 #  geom_text(aes(label=label))
 
 ggplot(got, aes(x=moral,y=physical)) + 
-  geom_point(size=5, alpha=.75) + 
+  geom_point(alpha=.75) + 
   geom_text(aes(label=label))
 
 ```
@@ -87,8 +76,8 @@ ggplot(got, aes(x=moral,y=physical)) +
 # where should the new option go? what layer? inside or outside of aesthetics?
 
 ggplot(got, aes(x=moral,y=physical)) + 
-  geom_point(size=5, alpha=.75) + 
-  geom_text(aes(label=label), nudge_y = -.025)
+  geom_point(alpha=.75) + 
+  geom_text(aes(label=label), nudge_y = -.015)
 
 ```
 
@@ -102,16 +91,16 @@ ggplot(got, aes(x=moral,y=physical)) +
 # - both
 
 ggplot(got, aes(x=moral,y=physical)) + 
-  geom_point(aes(color=gender), size=5, alpha=.75) + 
-  geom_text(aes(label=label), nudge_y = -.025)
+  geom_point(aes(color=gender), alpha=.75) + 
+  geom_text(aes(label=label), nudge_y = -.015)
 
 ggplot(got, aes(x=moral,y=physical)) + 
-  geom_point(size=5, alpha=.75) + 
-  geom_text(aes(label=label, color=gender), nudge_y = -.025)
+  geom_point(alpha=.75) + 
+  geom_text(aes(label=label, color=gender), nudge_y = -.015)
 
 ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  geom_point(size=5, alpha=.75) + 
-  geom_text(aes(label=label), nudge_y = -.025)
+  geom_point(alpha=.75) + 
+  geom_text(aes(label=label), nudge_y = -.015)
 
 ```
 
@@ -122,20 +111,20 @@ ggplot(got, aes(x=moral,y=physical, color=gender)) +
 # hint: there is another property for the geom_text layer that might help
 
 ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  geom_point(size=5, alpha=.75) + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE)
+  geom_point(alpha=.75) + 
+  geom_text(aes(label=label), nudge_y = -.015, show.legend = FALSE)
 
 ```
 
-## Add a main title
+## Split the chart up into separate charts for each family(loyalty group)
 
 ```{r}
 
-# check https://ggplot2.tidyverse.org/reference/ for likely layers
+# Hint: check https://ggplot2.tidyverse.org/reference/ for facet layers
 
 ggplot(got, aes(x=moral,y=physical, color=gender)) + 
-  geom_point(size=5, alpha=.75)  + 
-  geom_text(aes(label=label), nudge_y = -.025, show.legend = FALSE) +
-  labs(title="The moral and physical ratings of characters from Game of Thrones")
+  geom_point(alpha=.75)  + 
+  geom_text(aes(label=label), nudge_y = -.015, show.legend = FALSE) +
+  facet_wrap(vars(loyalty))
 
 ```

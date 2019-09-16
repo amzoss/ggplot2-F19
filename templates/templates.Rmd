@@ -5,13 +5,13 @@ date: "2/1/2018"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 knitr::opts_chunk$set(error = TRUE)
 ```
 
 ## Setup your environment
 
-```{r, message=FALSE}
+```{r}
 
 # Load required libraries
 
@@ -21,7 +21,7 @@ library(tidyverse)
 
 ## Load your data
 
-```{r, message=FALSE}
+```{r}
 
 # data comes from https://www.kaggle.com/uciml/adult-census-income
 
