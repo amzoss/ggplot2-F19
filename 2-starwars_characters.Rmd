@@ -77,11 +77,3 @@ starwars_chars <- starwars
 
 ```
 
-## Add a label to (only) the shortest character
-
-```{r}
-
-
-
-```
-

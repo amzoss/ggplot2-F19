@@ -84,24 +84,10 @@ ggplot(starwars_chars, aes(height,mass)) +
   geom_smooth(method = "lm", se=FALSE) + 
   geom_text(data=starwars_chars %>% dplyr::filter(mass > 1000), aes(label=name), nudge_y = -50)
 
-```
-
-## Add a label to (only) the shortest character
-
-```{r}
-
 ggplot(starwars_chars, aes(height,mass)) +
   geom_point() +
   geom_smooth(method = "lm", se=FALSE) + 
-  geom_text(data=starwars_chars %>% dplyr::filter(mass > 1000), aes(label=name), nudge_y = -50) + 
-  geom_text(data=starwars_chars %>% dplyr::filter(height < 75), aes(label=name), nudge_y = 50)
-
-# or
-ggplot(starwars_chars, aes(height,mass)) +
-  geom_point() +
-  geom_smooth(method = "lm", se=FALSE) + 
-  geom_text(data=starwars_chars %>% dplyr::filter(mass == max(mass, na.rm=T) | height == min(height, na.rm=T)), aes(label=name), nudge_y = 50)
-
+  geom_text(data=starwars_chars %>% dplyr::filter(mass == max(mass, na.rm=T)), aes(label=name), nudge_y = -50)
 
 ```
 
